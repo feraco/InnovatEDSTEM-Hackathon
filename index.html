@@ -7,7 +7,7 @@
     <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Varela" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Varela" rel='stylesheet'>
     <link rel="shortcut icon" type="image/jpeg" href="./favicon.jpeg">
     <style>
         h1 {
@@ -155,65 +155,69 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
     <script>
-        var hackStart = moment([2024, 9, 1, 8, 30, 0]); // October 1st, 2024
+        $(document).ready(function() {
+            var hackStart = moment([2024, 9, 1, 8, 30, 0]); // October 1st, 2024
 
-        function setDOMTime(days, hours, min, sec) {
-            console.log('setting timer for: ', days, hours, min, sec);
-            var el = $('.countdown');
-            el.find('.bloc-time.days .top, .bloc-time.days .bottom').text(days);
-            el.find('.bloc-time.hours .top, .bloc-time.hours .bottom').text(hours);
-            el.find('.bloc-time.min .top, .bloc-time.min .bottom').text(min);
-            el.find('.bloc-time.sec .top, .bloc-time.sec .bottom').text(sec);
-        }
-
-        function updateCountdown() {
-            var now = moment();
-            var diff = moment.duration(hackStart.diff(now));
-
-            if (diff.asSeconds() > 0) {
-                setDOMTime(Math.floor(diff.asDays()), diff.hours(), diff.minutes(), diff.seconds());
-            } else {
-                clearInterval(counter);
-                console.log('Hackathon Started!');
-                setDOMTime(0, 0, 0, 0);
+            function setDOMTime(days, hours, min, sec) {
+                console.log('setting timer for: ', days, hours, min, sec);
+                var el = $('.countdown');
+                el.find('.bloc-time.days .top, .bloc-time.days .bottom').text(days);
+                el.find('.bloc-time.hours .top, .bloc-time.hours .bottom').text(hours);
+                el.find('.bloc-time.min .top, .bloc-time.min .bottom').text(min);
+                el.find('.bloc-time.sec .top, .bloc-time.sec .bottom').text(sec);
             }
-        }
 
-        var counter = setInterval(updateCountdown, 1000);
-        updateCountdown();
+            function updateCountdown() {
+                var now = moment();
+                var diff = moment.duration(hackStart.diff(now));
 
-        function subscribe() {
-            var email = document.getElementById('email').value;
-            var apiKey = '220e43272ffe2649ec68b259fec9c901-us13';
-            var audienceId = 'f77832b129';
-            var url = `https://${apiKey.split('-')[1]}.api.mailchimp.com/3.0/lists/${audienceId}/members/`;
-
-            var data = {
-                email_address: email,
-                status: 'subscribed'
-            };
-
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `apikey ${apiKey}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'subscribed') {
-                    alert('Successfully subscribed!');
+                if (diff.asSeconds() > 0) {
+                    setDOMTime(Math.floor(diff.asDays()), diff.hours(), diff.minutes(), diff.seconds());
                 } else {
-                    alert('Subscription failed. Please try again.');
+                    clearInterval(counter);
+                    console.log('Hackathon Started!');
+                    setDOMTime(0, 0, 0, 0);
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
-            });
-        }
+            }
+
+            var counter = setInterval(updateCountdown, 1000);
+            updateCountdown();
+
+            function subscribe() {
+                var email = document.getElementById('email').value;
+                var apiKey = '220e43272ffe2649ec68b259fec9c901-us13';
+                var audienceId = 'f77832b129';
+                var url = `https://${apiKey.split('-')[1]}.api.mailchimp.com/3.0/lists/${audienceId}/members/`;
+
+                var data = {
+                    email_address: email,
+                    status: 'subscribed'
+                };
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `apikey ${apiKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'subscribed') {
+                        alert('Successfully subscribed!');
+                    } else {
+                        alert('Subscription failed. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                });
+            }
+
+            window.subscribe = subscribe;
+        });
     </script>
     <script>
         const text = document.querySelector('.typing-text');
@@ -223,7 +227,7 @@
             const LETTER_TYPE_DELAY = 75;
             const WORD_STAY_DELAY = 2000;
             const DIRECTION_FORWARDS = 0;
-            const DIRECTION BACKWARDS = 1;
+            const DIRECTION_BACKWARDS = 1;
             var direction = DIRECTION_FORWARDS;
             var wordIndex = 0;
             var letterIndex = 0;
@@ -237,11 +241,11 @@
                 if (direction == DIRECTION_FORWARDS) {
                     letterIndex++;
                     if (letterIndex == word.length) {
-                        direction = DIRECTION BACKWARDS;
+                        direction = DIRECTION_BACKWARDS;
                         clearInterval(wordTypeInterval);
                         setTimeout(startTyping, WORD_STAY_DELAY);
                     }
-                } else if (direction == DIRECTION BACKWARDS) {
+                } else if (direction == DIRECTION_BACKWARDS) {
                     letterIndex--;
                     if (letterIndex == 0) {
                         nextWord();
@@ -252,7 +256,7 @@
             }
             function nextWord() {
                 letterIndex = 0;
-                direction = DIRECTION FORWARDS;
+                direction = DIRECTION_FORWARDS;
                 wordIndex++;
                 if (wordIndex == words.length) {
                     wordIndex = 0;
