@@ -7,7 +7,7 @@
     <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Varela" rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css?family=Varela" rel="stylesheet">
     <link rel="shortcut icon" type="image/jpeg" href="./favicon.jpeg">
     <style>
         h1 {
@@ -156,6 +156,7 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
     <script>
         $(document).ready(function() {
+            console.log('jQuery and DOM are ready');
             var hackStart = moment([2024, 9, 1, 8, 30, 0]); // October 1st, 2024
 
             function setDOMTime(days, hours, min, sec) {
@@ -220,22 +221,20 @@
         });
     </script>
     <script>
-        const text = document.querySelector('.typing-text');
-        const words = ["Research", "Ideas.", "Physics", "Innovation.", "Engineering", "Development.", "Computer Science", "Hackathon."];
-        setTyper(text, words);
         function setTyper(element, words) {
             const LETTER_TYPE_DELAY = 75;
             const WORD_STAY_DELAY = 2000;
             const DIRECTION_FORWARDS = 0;
             const DIRECTION_BACKWARDS = 1;
-            var direction = DIRECTION_FORWARDS;
-            var wordIndex = 0;
-            var letterIndex = 0;
-            var wordTypeInterval;
-            startTyping();
+            let direction = DIRECTION_FORWARDS;
+            let wordIndex = 0;
+            let letterIndex = 0;
+            let wordTypeInterval;
+
             function startTyping() {
                 wordTypeInterval = setInterval(typeLetter, LETTER_TYPE_DELAY);
             }
+
             function typeLetter() {
                 const word = words[wordIndex];
                 if (direction == DIRECTION_FORWARDS) {
@@ -254,6 +253,7 @@
                 const textToType = word.substring(0, letterIndex);
                 element.textContent = textToType;
             }
+
             function nextWord() {
                 letterIndex = 0;
                 direction = DIRECTION_FORWARDS;
@@ -262,7 +262,15 @@
                     wordIndex = 0;
                 }
             }
+
+            startTyping();
         }
+
+        $(document).ready(function() {
+            const text = document.querySelector('.typing-text');
+            const words = ["Research", "Ideas.", "Physics", "Innovation.", "Engineering", "Development.", "Computer Science", "Hackathon."];
+            setTyper(text, words);
+        });
     </script>
 </body>
 </html>
